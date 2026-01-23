@@ -1,4 +1,5 @@
 import asyncio
+import sys
 
 from collections.abc import Callable
 from io import StringIO
@@ -46,9 +47,7 @@ T = TypeVar('T')
 
 class RoomHandler:
     def __init__(self, room_id: int, credential: Credential) -> None:
-        self.room = live.LiveDanmaku(room_id, credential=credential)
-        # 设置日志等级为Info
-
+        self.room = live.LiveDanmaku(room_id, credential=credential, max_retry=sys.maxsize)
         self.room.logger = logger
         self.room_id = room_id
 
@@ -74,7 +73,6 @@ class Monitor:
         self.rooms = [
             RoomHandler(room_id, credential=self.credential) for room_id in settings.BILIBILI_MONITOR_ROOM_IDS
         ]
-        self._stop_event = asyncio.Event()
 
     def on(self, event_type: str) -> Callable[[Callable[[dict], Any]], Callable[[dict], Any]]:
         """
@@ -108,7 +106,7 @@ class Monitor:
         """
         # logger.info(f"开始连接房间: {', '.join([str(room.room_id) for room in self.rooms])}")
         await asyncio.gather(*[room.connect() for room in self.rooms])
-        await self._stop_event.wait()
+        # await self._stop_event.wait()
 
     async def stop(self) -> None:
         """
@@ -117,7 +115,6 @@ class Monitor:
         设置停止事件来通知 run 方法退出
         """
         logger.info(f'停止监控房间: {", ".join([str(room.room_id) for room in self.rooms])}')
-        self._stop_event.set()
         await asyncio.gather(*[room.disconnect() for room in self.rooms])
 
 
