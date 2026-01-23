@@ -10,6 +10,7 @@ license = { text = "MIT" }
 requires-python = ">=3.10"
 dynamic = ['version']
 dependencies = [
+    "aiohttp>=3.13.3",
     "alembic>=1.18.1",
     "asgiref>=3.11.0",
     "asyncmy>=0.2.11",
@@ -30,6 +31,7 @@ dependencies = [
     "flower>=2.0.1",
     "gevent>=25.9.1",
     "granian>=2.6.1",
+    "httpx[socks]>=0.28.1",
     "ip2loc>=1.0.0",
     "itsdangerous>=2.2.0",
     "jinja2>=3.1.6",

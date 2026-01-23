@@ -272,6 +272,11 @@ class Settings(BaseSettings):
     EMAIL_CAPTCHA_REDIS_PREFIX: str = 'dmk_m:email:captcha'
     EMAIL_CAPTCHA_EXPIRE_SECONDS: int = 60 * 3  # 3 分钟
 
+    ##################################################
+    # [ Danmaku ] bilibili
+    ##################################################
+    BILIBILI_MONITOR_ROOM_IDS: list[int] = [213]
+
     @model_validator(mode='before')
     @classmethod
     def check_env(cls, values: Any) -> Any:

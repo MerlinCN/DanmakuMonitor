@@ -17,6 +17,7 @@ from starlette_context.middleware import ContextMiddleware
 from starlette_context.plugins import RequestIdPlugin
 
 from backend import __version__
+from backend.app.danmaku.service.core import bilibili_service
 from backend.common.exception.exception_handler import register_exception
 from backend.common.log import set_custom_logfile, setup_logging
 from backend.common.response.response_code import StandardResponseCode
@@ -65,12 +66,12 @@ async def register_init(app: FastAPI) -> AsyncGenerator[None, None]:
 
     # 创建操作日志任务
     create_task(OperaLogMiddleware.consumer())
-
+    create_task(bilibili_service.start())
     yield
 
     # 释放 snowflake 节点
     await snowflake.shutdown()
-
+    await bilibili_service.stop()
     # 关闭 redis 连接
     await redis_client.aclose()
 
