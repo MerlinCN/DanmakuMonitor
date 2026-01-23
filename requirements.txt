@@ -2,7 +2,7 @@
 #    uv export -o requirements.txt --no-hashes
 -e .
 alembic==1.18.1
-    # via fastapi-best-architecture
+    # via danmakumonitor
 amqp==5.3.1
     # via kombu
 annotated-doc==0.0.4
@@ -14,33 +14,41 @@ anyio==4.12.1
     #   httpx
     #   starlette
     #   watchfiles
+apscheduler==3.11.2
+    # via bilibili-api-python
 asgiref==3.11.0
     # via
-    #   fastapi-best-architecture
+    #   danmakumonitor
     #   opentelemetry-instrumentation-asgi
 async-timeout==5.0.1 ; python_full_version < '3.11.3'
     # via
     #   asyncpg
     #   redis
 asyncmy==0.2.11
-    # via fastapi-best-architecture
+    # via danmakumonitor
 asyncpg==0.31.0
-    # via fastapi-best-architecture
+    # via danmakumonitor
 bcrypt==5.0.0
-    # via fastapi-best-architecture
+    # via danmakumonitor
+beautifulsoup4==4.14.3
+    # via bilibili-api-python
 bidict==0.23.1
     # via python-socketio
+bilibili-api-python==17.4.1
+    # via danmakumonitor
 billiard==4.2.4
     # via celery
+brotli==1.2.0
+    # via bilibili-api-python
 cappa==0.31.0
-    # via fastapi-best-architecture
+    # via danmakumonitor
 celery==5.6.2
     # via
     #   celery-aio-pool
-    #   fastapi-best-architecture
+    #   danmakumonitor
     #   flower
 celery-aio-pool==0.1.0rc8
-    # via fastapi-best-architecture
+    # via danmakumonitor
 certifi==2026.1.4
     # via
     #   httpcore
@@ -65,18 +73,20 @@ click-plugins==1.1.1.2
     # via celery
 click-repl==0.3.0
     # via celery
-colorama==0.4.6 ; sys_platform == 'win32'
+colorama==0.4.6
     # via
+    #   bilibili-api-python
     #   click
     #   loguru
     #   pytest
+    #   qrcode
     #   uvicorn
 cryptography==46.0.3
-    # via fastapi-best-architecture
+    # via danmakumonitor
 dnspython==2.8.0
     # via email-validator
 dulwich==1.0.0
-    # via fastapi-best-architecture
+    # via danmakumonitor
 ecdsa==0.19.1
     # via python-jose
 email-validator==2.3.0
@@ -87,26 +97,26 @@ exceptiongroup==1.3.1 ; python_full_version < '3.11'
     #   celery
     #   pytest
 fast-captcha==0.3.2
-    # via fastapi-best-architecture
+    # via danmakumonitor
 fastapi==0.128.0
     # via
-    #   fastapi-best-architecture
+    #   danmakumonitor
     #   fastapi-limiter
     #   fastapi-pagination
 fastapi-cli==0.0.20
     # via fastapi
 fastapi-limiter==0.1.6
-    # via fastapi-best-architecture
+    # via danmakumonitor
 fastapi-pagination==0.15.6
-    # via fastapi-best-architecture
+    # via danmakumonitor
 flower==2.0.1
-    # via fastapi-best-architecture
+    # via danmakumonitor
 gevent==25.9.1
-    # via fastapi-best-architecture
+    # via danmakumonitor
 googleapis-common-protos==1.72.0
     # via opentelemetry-exporter-otlp-proto-grpc
 granian==2.6.1
-    # via fastapi-best-architecture
+    # via danmakumonitor
 greenlet==3.3.0
     # via
     #   gevent
@@ -133,22 +143,25 @@ idna==3.11
     #   anyio
     #   email-validator
     #   httpx
+    #   yarl
 importlib-metadata==8.7.1
     # via opentelemetry-api
 iniconfig==2.3.0
     # via pytest
 ip2loc==1.0.0
-    # via fastapi-best-architecture
+    # via danmakumonitor
 itsdangerous==2.2.0
-    # via fastapi-best-architecture
+    # via danmakumonitor
 jinja2==3.1.6
     # via
+    #   danmakumonitor
     #   fastapi
-    #   fastapi-best-architecture
 kombu==5.6.2
     # via celery
 loguru==0.7.3
-    # via fastapi-best-architecture
+    # via danmakumonitor
+lxml==6.0.2
+    # via bilibili-api-python
 mako==1.3.10
     # via alembic
 markdown-it-py==4.0.0
@@ -160,7 +173,9 @@ markupsafe==3.0.3
 mdurl==0.1.2
     # via markdown-it-py
 msgspec==0.20.0
-    # via fastapi-best-architecture
+    # via danmakumonitor
+multidict==6.7.0
+    # via yarl
 opentelemetry-api==1.39.1
     # via
     #   opentelemetry-exporter-otlp-proto-grpc
@@ -176,7 +191,7 @@ opentelemetry-api==1.39.1
 opentelemetry-exporter-otlp-proto-common==1.39.1
     # via opentelemetry-exporter-otlp-proto-grpc
 opentelemetry-exporter-otlp-proto-grpc==1.39.1
-    # via fastapi-best-architecture
+    # via danmakumonitor
 opentelemetry-instrumentation==0.60b1
     # via
     #   opentelemetry-instrumentation-asgi
@@ -188,22 +203,22 @@ opentelemetry-instrumentation==0.60b1
 opentelemetry-instrumentation-asgi==0.60b1
     # via opentelemetry-instrumentation-fastapi
 opentelemetry-instrumentation-fastapi==0.60b1
-    # via fastapi-best-architecture
+    # via danmakumonitor
 opentelemetry-instrumentation-httpx==0.60b1
-    # via fastapi-best-architecture
+    # via danmakumonitor
 opentelemetry-instrumentation-logging==0.60b1
-    # via fastapi-best-architecture
+    # via danmakumonitor
 opentelemetry-instrumentation-redis==0.60b1
-    # via fastapi-best-architecture
+    # via danmakumonitor
 opentelemetry-instrumentation-sqlalchemy==0.60b1
-    # via fastapi-best-architecture
+    # via danmakumonitor
 opentelemetry-proto==1.39.1
     # via
     #   opentelemetry-exporter-otlp-proto-common
     #   opentelemetry-exporter-otlp-proto-grpc
 opentelemetry-sdk==1.39.1
     # via
-    #   fastapi-best-architecture
+    #   danmakumonitor
     #   opentelemetry-exporter-otlp-proto-grpc
 opentelemetry-semantic-conventions==0.60b1
     # via
@@ -226,38 +241,45 @@ packaging==26.0
     #   opentelemetry-instrumentation-sqlalchemy
     #   pytest
 pillow==12.1.0
-    # via fast-captcha
+    # via
+    #   bilibili-api-python
+    #   fast-captcha
+    #   qrcode-terminal
 pluggy==1.6.0
     # via pytest
 prek==0.3.0
 prometheus-client==0.24.1
     # via
-    #   fastapi-best-architecture
+    #   danmakumonitor
     #   flower
 prompt-toolkit==3.0.52
     # via click-repl
+propcache==0.4.1
+    # via yarl
 protobuf==6.33.4
     # via
     #   googleapis-common-protos
     #   opentelemetry-proto
 psutil==7.2.1
-    # via fastapi-best-architecture
+    # via danmakumonitor
 psycopg==3.2.10
-    # via fastapi-best-architecture
+    # via danmakumonitor
 psycopg-binary==3.2.10 ; implementation_name != 'pypy'
     # via psycopg
 pwdlib==0.3.0
-    # via fastapi-best-architecture
+    # via danmakumonitor
 pyasn1==0.6.2
     # via
     #   python-jose
     #   rsa
 pycparser==3.0 ; implementation_name != 'PyPy' and platform_python_implementation != 'PyPy'
     # via cffi
+pycryptodomex==3.23.0
+    # via bilibili-api-python
 pydantic==2.12.5
     # via
+    #   danmakumonitor
     #   fastapi
-    #   fastapi-best-architecture
     #   fastapi-pagination
     #   pydantic-extra-types
     #   pydantic-settings
@@ -268,14 +290,16 @@ pydantic-extra-types==2.11.0
     # via fastapi
 pydantic-settings==2.12.0
     # via
+    #   danmakumonitor
     #   fastapi
-    #   fastapi-best-architecture
 pygments==2.19.2
     # via
     #   pytest
     #   rich
+pyjwt==2.10.1
+    # via bilibili-api-python
 pymysql==1.1.2
-    # via fastapi-best-architecture
+    # via danmakumonitor
 pytest==9.0.2
     # via pytest-sugar
 pytest-sugar==1.1.1
@@ -288,18 +312,26 @@ python-dotenv==1.2.1
 python-engineio==4.13.0
     # via python-socketio
 python-jose==3.5.0
-    # via fastapi-best-architecture
+    # via danmakumonitor
 python-multipart==0.0.21
     # via fastapi
 python-socketio==5.16.0
-    # via fastapi-best-architecture
+    # via danmakumonitor
 pytz==2025.2
     # via flower
 pyyaml==6.0.3
-    # via uvicorn
+    # via
+    #   bilibili-api-python
+    #   uvicorn
+qrcode==8.2
+    # via
+    #   bilibili-api-python
+    #   qrcode-terminal
+qrcode-terminal==0.8
+    # via bilibili-api-python
 redis==7.1.0
     # via
-    #   fastapi-best-architecture
+    #   danmakumonitor
     #   fastapi-limiter
 rich==14.2.0
     # via
@@ -311,7 +343,7 @@ rich-toolkit==0.17.1
 rsa==4.9.1
     # via python-jose
 rtoml==0.13.0
-    # via fastapi-best-architecture
+    # via danmakumonitor
 shellingham==1.5.4
     # via typer
 simple-websocket==1.1.0
@@ -320,21 +352,23 @@ six==1.17.0
     # via
     #   ecdsa
     #   python-dateutil
+soupsieve==2.8.3
+    # via beautifulsoup4
 sqlalchemy==2.0.46
     # via
     #   alembic
-    #   fastapi-best-architecture
+    #   danmakumonitor
     #   sqlalchemy-crud-plus
 sqlalchemy-crud-plus==1.13.1
-    # via fastapi-best-architecture
+    # via danmakumonitor
 sqlparse==0.5.5
-    # via fastapi-best-architecture
+    # via danmakumonitor
 starlette==0.50.0
     # via
     #   fastapi
     #   starlette-context
 starlette-context==0.4.0
-    # via fastapi-best-architecture
+    # via danmakumonitor
 termcolor==3.3.0
     # via pytest-sugar
 tomli==2.4.0 ; python_full_version < '3.11'
@@ -353,6 +387,7 @@ typing-extensions==4.15.0
     #   alembic
     #   anyio
     #   asgiref
+    #   beautifulsoup4
     #   cappa
     #   cryptography
     #   dulwich
@@ -360,6 +395,7 @@ typing-extensions==4.15.0
     #   fastapi
     #   fastapi-pagination
     #   grpcio
+    #   multidict
     #   opentelemetry-api
     #   opentelemetry-exporter-otlp-proto-grpc
     #   opentelemetry-sdk
@@ -385,7 +421,9 @@ tzdata==2025.3
     #   psycopg
     #   tzlocal
 tzlocal==5.3.1
-    # via celery
+    # via
+    #   apscheduler
+    #   celery
 ua-parser==1.0.1
     # via user-agents
 ua-parser-builtins==202601
@@ -393,7 +431,7 @@ ua-parser-builtins==202601
 urllib3==2.6.3
     # via dulwich
 user-agents==2.2.0
-    # via fastapi-best-architecture
+    # via danmakumonitor
 uvicorn==0.40.0
     # via
     #   fastapi
@@ -421,6 +459,8 @@ wrapt==1.17.3
     #   opentelemetry-instrumentation-sqlalchemy
 wsproto==1.3.2
     # via simple-websocket
+yarl==1.22.0
+    # via bilibili-api-python
 zipp==3.23.0
     # via importlib-metadata
 zope-event==6.1
