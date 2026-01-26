@@ -18,6 +18,9 @@ LOG_DIR = BASE_PATH / 'log'
 # 静态资源目录
 STATIC_DIR = BASE_PATH / 'static'
 
+# 前端构建产物目录
+DIST_DIR = BASE_PATH / 'dist'
+
 # 上传文件目录
 UPLOAD_DIR = STATIC_DIR / 'upload'
 

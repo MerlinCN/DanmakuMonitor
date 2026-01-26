@@ -12,16 +12,18 @@ from fastapi_pagination import add_pagination
 from prometheus_client import make_asgi_app
 from starlette.middleware.authentication import AuthenticationMiddleware
 from starlette.middleware.cors import CORSMiddleware
+from starlette.responses import FileResponse
 from starlette.staticfiles import StaticFiles
 from starlette_context.middleware import ContextMiddleware
 from starlette_context.plugins import RequestIdPlugin
 
 from backend import __version__
+from backend.app.danmaku.service.core import bilibili_service
 from backend.common.exception.exception_handler import register_exception
 from backend.common.log import set_custom_logfile, setup_logging
 from backend.common.response.response_code import StandardResponseCode
 from backend.core.conf import settings
-from backend.core.path_conf import STATIC_DIR, UPLOAD_DIR
+from backend.core.path_conf import DIST_DIR, STATIC_DIR, UPLOAD_DIR
 from backend.database.db import create_tables
 from backend.database.redis import redis_client
 from backend.middleware.access_middleware import AccessMiddleware
@@ -65,12 +67,12 @@ async def register_init(app: FastAPI) -> AsyncGenerator[None, None]:
 
     # 创建操作日志任务
     create_task(OperaLogMiddleware.consumer())
-
+    create_task(bilibili_service.start())
     yield
 
     # 释放 snowflake 节点
     await snowflake.shutdown()
-
+    await bilibili_service.stop()
     # 关闭 redis 连接
     await redis_client.aclose()
 
@@ -100,6 +102,13 @@ def register_app() -> FastAPI:
 
     if settings.GRAFANA_METRICS:
         register_metrics(app)
+
+    if os.path.exists(DIST_DIR):
+        app.mount('/assets', StaticFiles(directory=DIST_DIR / 'assets'), name='frontend_assets')
+
+        @app.get('/{path:path}')
+        async def serve_spa(path: str) -> FileResponse:
+            return FileResponse(DIST_DIR / 'index.html')
 
     return app
 

@@ -9,4 +9,6 @@ venv/
 .pytest_cache/
 .claude/
 .serena/
+test.py
 dist/
+!dist/.gitkeep
