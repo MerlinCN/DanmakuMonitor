@@ -123,7 +123,7 @@ class Settings(BaseSettings):
     ]
 
     # Cookie
-    COOKIE_REFRESH_TOKEN_KEY: str = 'fba_refresh_token'
+    COOKIE_REFRESH_TOKEN_KEY: str = 'dmk_m_refresh_token'
     COOKIE_REFRESH_TOKEN_EXPIRE_SECONDS: int = 60 * 60 * 24 * 7  # 7 天
 
     # 数据权限
@@ -194,8 +194,8 @@ class Settings(BaseSettings):
     # 日志（文件）
     LOG_FILE_ACCESS_LEVEL: str = 'INFO'
     LOG_FILE_ERROR_LEVEL: str = 'ERROR'
-    LOG_ACCESS_FILENAME: str = 'fba_access.log'
-    LOG_ERROR_FILENAME: str = 'fba_error.log'
+    LOG_ACCESS_FILENAME: str = 'dmk_m_access.log'
+    LOG_ERROR_FILENAME: str = 'dmk_m_error.log'
 
     # 操作日志
     OPERA_LOG_PATH_EXCLUDE: list[str] = [
@@ -227,8 +227,8 @@ class Settings(BaseSettings):
 
     # Grafana
     GRAFANA_METRICS: bool = False
-    GRAFANA_APP_NAME: str = 'fba_server'
-    GRAFANA_OTLP_GRPC_ENDPOINT: str = 'fba_alloy:4317'
+    GRAFANA_APP_NAME: str = 'dmk_m_server'
+    GRAFANA_OTLP_GRPC_ENDPOINT: str = 'dmk_m_alloy:4317'
 
     ##################################################
     # [ App ] task
