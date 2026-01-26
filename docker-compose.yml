@@ -1,12 +1,4 @@
 services:
-  dmk_m_frontend:
-    platform: linux/amd64
-    build:
-      context: /Users/merlin/BiliDanmuWeb
-      dockerfile: Dockerfile
-    volumes:
-      - frontend_dist:/app/dist
-
   dmk_m_backend:
     platform: linux/amd64
     build: .
@@ -16,11 +8,7 @@ services:
       - REDIS_HOST=dmk_m_redis
       - DATABASE_HOST=host.docker.internal
     volumes:
-      - frontend_dist:/app/backend/dist:ro
-    depends_on:
-      dmk_m_frontend:
-        condition: service_completed_successfully
-      dmk_m_redis:
+      - ./dist:/app/backend/dist:ro
     restart: unless-stopped
 
   dmk_m_redis:
@@ -31,4 +19,3 @@ services:
 
 volumes:
   redis_data:
-  frontend_dist:
