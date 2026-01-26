@@ -101,8 +101,6 @@ class Monitor:
     async def run(self) -> None:
         """
         运行监控器，连接所有房间并保持运行直到停止
-
-        使用 asyncio.Event 来优雅地等待停止信号，而不是轮询
         """
         # logger.info(f"开始连接房间: {', '.join([str(room.room_id) for room in self.rooms])}")
         await asyncio.gather(*[room.connect() for room in self.rooms])
@@ -111,8 +109,6 @@ class Monitor:
     async def stop(self) -> None:
         """
         停止监控器，断开所有房间连接
-
-        设置停止事件来通知 run 方法退出
         """
         logger.info(f'停止监控房间: {", ".join([str(room.room_id) for room in self.rooms])}')
         await asyncio.gather(*[room.disconnect() for room in self.rooms])
