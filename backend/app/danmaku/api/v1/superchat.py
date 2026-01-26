@@ -41,7 +41,7 @@ def _apply_superchat_filters(stmt: Select, filters: SuperchatSearchFilters) -> S
     return stmt
 
 
-@router.post('', dependencies=[DependsPagination])
+@router.post('/search', dependencies=[DependsPagination])
 async def search_superchat(
     db: CurrentSession,
     filters: SuperchatSearchFilters,

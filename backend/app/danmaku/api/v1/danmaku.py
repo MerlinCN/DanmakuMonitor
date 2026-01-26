@@ -46,7 +46,7 @@ def _apply_danmaku_filters(stmt: Select, filters: DanmakuSearchFilters) -> Selec
     return stmt
 
 
-@router.post('', dependencies=[DependsPagination])
+@router.post('/search', dependencies=[DependsPagination])
 async def search_danmaku(
     db: CurrentSession,
     filters: DanmakuSearchFilters,
