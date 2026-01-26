@@ -289,7 +289,7 @@ class Settings(BaseSettings):
     # [ Plugin ] danmaku
     ##################################################
     # .env
-    DANMAKU_MONITOR_ROOM_IDS: list[int]
+    BILIBILI_MONITOR_ROOM_IDS: list[int]
 
     @model_validator(mode='before')
     @classmethod
