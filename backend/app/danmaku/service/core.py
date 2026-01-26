@@ -196,7 +196,7 @@ class BilibiliService:
 
     async def login_by_qrcode(
         self,
-        platform: QrCodeLoginChannel = QrCodeLoginChannel.WEB,
+        platform: QrCodeLoginChannel = QrCodeLoginChannel.TV,
         poll_interval: float = 1.0,
     ) -> Credential:
         """
