@@ -19,7 +19,7 @@ from rich.table import Table
 from rich.text import Text
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncConnection, AsyncSession
-from watchfiles import PythonFilter
+from watchfiles import Change, PythonFilter
 
 from backend import __version__
 from backend.common.enums import DataBaseType, PrimaryKeyType
@@ -31,6 +31,7 @@ from backend.core.path_conf import (
     ENV_FILE_PATH,
     MYSQL_SCRIPT_DIR,
     POSTGRESQL_SCRIPT_DIR,
+    RELOAD_LOCK_FILE,
 )
 from backend.database.db import (
     async_db_session,
@@ -53,6 +54,11 @@ class CustomReloadFilter(PythonFilter):
 
     def __init__(self) -> None:
         super().__init__(extra_extensions=['.json', '.yaml', '.yml'])
+
+    def __call__(self, change: Change, path: str) -> bool:
+        if RELOAD_LOCK_FILE.exists():
+            return False
+        return super().__call__(change, path)
 
 
 def setup_env_file() -> bool:
@@ -338,6 +344,9 @@ async def install_plugin(
     db_type: DataBaseType,
     pk_type: PrimaryKeyType,
 ) -> None:
+    if settings.ENVIRONMENT != 'dev':
+        raise cappa.Exit('插件安装仅在开发环境可用', code=1)
+
     if not path and not repo_url:
         raise cappa.Exit('path 或 repo_url 必须指定其中一项', code=1)
     if path and repo_url:
@@ -403,6 +412,9 @@ async def import_table(
     table_schema: str,
     table_name: str,
 ) -> None:
+    if settings.ENVIRONMENT != 'dev':
+        raise cappa.Exit('代码生成仅在开发环境可用', code=1)
+
     from backend.plugin.code_generator.schema.gen import ImportParam
     from backend.plugin.code_generator.service.gen_service import gen_service
 
@@ -416,7 +428,10 @@ async def import_table(
         raise cappa.Exit(e.msg if isinstance(e, BaseExceptionError) else str(e), code=1)
 
 
-async def generate() -> None:
+async def generate(*, preview: bool = False) -> None:
+    if settings.ENVIRONMENT != 'dev':
+        raise cappa.Exit('代码生成仅在开发环境可用', code=1)
+
     from backend.plugin.code_generator.service.business_service import gen_business_service
     from backend.plugin.code_generator.service.gen_service import gen_service
 
@@ -446,13 +461,39 @@ async def generate() -> None:
         console.print(table)
         business = IntPrompt.ask('请从中选择一个业务编号', choices=[str(id_) for id_ in ids])
 
-        async with async_db_session.begin() as db:
-            gen_path = await gen_service.generate(db=db, pk=business)
+        # 预览
+        async with async_db_session() as db:
+            preview_data = await gen_service.preview(db=db, pk=business)
+
+        console.print('\n[bold yellow]将要生成以下文件：[/]')
+        file_table = Table(show_header=True, header_style='bold cyan')
+        file_table.add_column('文件路径', style='white')
+        file_table.add_column('大小', style='green', justify='right')
+
+        for filepath, content in sorted(preview_data.items()):
+            size = len(content)
+            size_str = f'{size} B' if size < 1024 else f'{size / 1024:.1f} KB'
+            file_table.add_row(filepath, size_str)
+
+        console.print(file_table)
+
+        if preview:
+            console.print('\n[bold cyan]预览模式：未执行实际生成操作[/]')
+            return
+
+        # 生成
+        console.print('\n[bold red]警告：代码生成将进行磁盘文件（覆盖）写入，切勿在生产环境中使用！！！[/]')
+        ok = Prompt.ask('\n确认继续生成代码吗？', choices=['y', 'n'], default='n')
+
+        if ok.lower() == 'y':
+            async with async_db_session.begin() as db:
+                gen_path = await gen_service.generate(db=db, pk=business)
+
+            console.print('\n代码已生成完成', style='bold green')
+            console.print(Text('\n详情请查看：'), Text(str(gen_path), style='bold white'))
+
     except Exception as e:
         raise cappa.Exit(e.msg if isinstance(e, BaseExceptionError) else str(e), code=1)
-
-    console.print('\n代码已生成完成', style='bold green')
-    console.print(Text('\n详情请查看：'), Text(str(gen_path), style='bold magenta'))
 
 
 @cappa.command(help='初始化 fba 项目', default_long=True)
@@ -602,6 +643,10 @@ class Import:
 @cappa.command(name='codegen', help='代码生成（体验完整功能，请自行部署 fba vben 前端工程）', default_long=True)
 @dataclass
 class CodeGenerator:
+    preview: Annotated[
+        bool,
+        cappa.Arg(short='-p', default=False, help='仅预览将要生成的文件，不执行实际生成操作'),
+    ]
     subcmd: cappa.Subcommands[Import | None] = None
 
     def __post_init__(self) -> None:
@@ -611,7 +656,7 @@ class CodeGenerator:
             raise cappa.Exit('代码生成插件不存在，请先安装此插件')
 
     async def __call__(self) -> None:
-        await generate()
+        await generate(preview=self.preview)
 
 
 @cappa.command(help='一个高效的 fba 命令行界面', default_long=True)
