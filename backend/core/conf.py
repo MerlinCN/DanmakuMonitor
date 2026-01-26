@@ -285,6 +285,12 @@ class Settings(BaseSettings):
     EMAIL_CAPTCHA_REDIS_PREFIX: str
     EMAIL_CAPTCHA_EXPIRE_SECONDS: int
 
+    ##################################################
+    # [ Plugin ] danmaku
+    ##################################################
+    # .env
+    DANMAKU_MONITOR_ROOM_IDS: list[int]
+
     @model_validator(mode='before')
     @classmethod
     def check_env(cls, values: Any) -> Any:
