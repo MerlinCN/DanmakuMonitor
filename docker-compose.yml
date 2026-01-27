@@ -9,6 +9,7 @@ services:
       - DATABASE_HOST=host.docker.internal
     volumes:
       - ./dist:/app/backend/dist:ro
+      - ./backend/.env:/app/backend/.env:ro
     restart: unless-stopped
 
   dmk_m_redis:
