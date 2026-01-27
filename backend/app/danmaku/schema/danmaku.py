@@ -91,3 +91,33 @@ class GetSuperchatDetail(SchemaBase):
     price: int = Field(default=0, description='价格 (CNY)')
     duration: int = Field(default=0, description='消息持续时间')
     timestamp: int = Field(description='发送时的 UNIX 毫秒时间戳')
+
+
+class RoomBlockSortField(StrEnum):
+    """房间禁言排序字段"""
+
+    TIMESTAMP = 'timestamp'
+
+
+class RoomBlockSearchFilters(SchemaBase):
+    """房间禁言搜索过滤参数"""
+
+    start_date: int | None = Field(None, description='开始时间 (UNIX 毫秒时间戳)')
+    end_date: int | None = Field(None, description='结束时间 (UNIX 毫秒时间戳)')
+    user_mid: int | None = Field(None, description='用户 ID')
+    user_name: str | None = Field(None, description='用户名 (模糊匹配)')
+    room_id: int | None = Field(None, description='房间 ID')
+    sort_by: RoomBlockSortField | None = Field(None, description='排序字段')
+    sort_order: SortOrder | None = Field(None, description='排序方向')
+
+
+class GetRoomBlockDetail(SchemaBase):
+    """房间禁言详情"""
+
+    model_config = ConfigDict(from_attributes=True)
+
+    id: int = Field(description='禁言记录 ID')
+    room_id: int = Field(description='房间 ID')
+    user_mid: int = Field(description='被禁言用户 ID')
+    user_name: str = Field(description='被禁言用户名')
+    timestamp: int = Field(description='禁言时的 UNIX 毫秒时间戳')
