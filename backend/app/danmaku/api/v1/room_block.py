@@ -5,6 +5,7 @@ from sqlalchemy.orm import InstrumentedAttribute
 from backend.app.danmaku.model.live import RoomBlockMsg
 from backend.app.danmaku.schema.danmaku import (
     GetRoomBlockDetail,
+    RoomBlockCountFilters,
     RoomBlockSearchFilters,
     RoomBlockSortField,
     SortOrder,
@@ -60,12 +61,16 @@ async def search_room_block(
     return response_base.success(data=page_data)
 
 
-@router.get('/count/{uid}')
-async def count_room_block_by_uid(
+@router.post('/count')
+async def count_room_block(
     db: CurrentSession,
-    uid: int,
+    filters: RoomBlockCountFilters,
 ) -> ResponseSchemaModel[int]:
-    stmt = select(func.count()).select_from(RoomBlockMsg).where(RoomBlockMsg.user_mid == uid)
+    stmt = select(func.count()).select_from(RoomBlockMsg)
+    if filters.user_mid:
+        stmt = stmt.where(RoomBlockMsg.user_mid == filters.user_mid)
+    if filters.room_id:
+        stmt = stmt.where(RoomBlockMsg.room_id == filters.room_id)
     result = await db.execute(stmt)
     count = result.scalar() or 0
     return response_base.success(data=count)

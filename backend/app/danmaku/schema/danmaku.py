@@ -121,3 +121,10 @@ class GetRoomBlockDetail(SchemaBase):
     user_mid: int = Field(description='被禁言用户 ID')
     user_name: str = Field(description='被禁言用户名')
     timestamp: int = Field(description='禁言时的 UNIX 毫秒时间戳')
+
+
+class RoomBlockCountFilters(SchemaBase):
+    """房间禁言计数过滤参数"""
+
+    user_mid: int | None = Field(None, description='用户 ID')
+    room_id: int | None = Field(None, description='房间 ID')
