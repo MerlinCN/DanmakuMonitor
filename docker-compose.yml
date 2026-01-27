@@ -3,14 +3,13 @@ services:
     platform: linux/amd64
     build: .
     ports:
-      - "8000:8000"
-    environment:
-      - REDIS_HOST=dmk_m_redis
-      - DATABASE_HOST=host.docker.internal
+      - "12380:8000"
     volumes:
       - ./dist:/app/backend/dist:ro
       - ./backend/.env:/app/backend/.env:ro
     restart: unless-stopped
+    depends_on:
+      - dmk_m_redis
 
   dmk_m_redis:
     image: redis:latest
