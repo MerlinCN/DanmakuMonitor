@@ -2,7 +2,7 @@ from fastapi import APIRouter
 from sqlalchemy import Select, asc, desc, select
 from sqlalchemy.orm import InstrumentedAttribute
 
-from backend.app.danmaku.model.live import DanmakuMessage
+from backend.app.danmaku.model.live import DanmakuMessage, GuardLevel
 from backend.app.danmaku.schema.danmaku import DanmakuSearchFilters, DanmakuSortField, GetDanmakuDetail, SortOrder
 from backend.common.pagination import DependsPagination, PageData, paging_data
 from backend.common.response.response_schema import ResponseSchemaModel, response_base
@@ -40,7 +40,7 @@ def _apply_danmaku_filters(stmt: Select, filters: DanmakuSearchFilters) -> Selec
     if filters.fans_medal_name:
         stmt = stmt.where(DanmakuMessage.fans_medal_name.ilike(f'%{filters.fans_medal_name}%'))
     if filters.guard_level is not None:
-        stmt = stmt.where(DanmakuMessage.guard_level == filters.guard_level)
+        stmt = stmt.where(DanmakuMessage.guard_level == GuardLevel(filters.guard_level))
     if filters.fans_medal_level is not None:
         stmt = stmt.where(DanmakuMessage.fans_medal_level >= filters.fans_medal_level)
     return stmt
