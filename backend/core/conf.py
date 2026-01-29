@@ -290,6 +290,8 @@ class Settings(BaseSettings):
     ##################################################
     # .env
     BILIBILI_MONITOR_ROOM_IDS: list[int]
+    QQ_GROUP_DATABASE: str = 'postgres'
+    QQ_GROUP_SCHEMA: str = 'kinoko7bot_dev'
 
     @model_validator(mode='before')
     @classmethod

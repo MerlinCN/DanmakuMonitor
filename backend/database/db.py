@@ -98,6 +98,12 @@ async def get_db_transaction() -> AsyncGenerator[AsyncSession, None]:
         yield session
 
 
+async def get_qq_group_db() -> AsyncGenerator[AsyncSession, None]:
+    """获取 qq_group 数据库会话"""
+    async with qq_group_async_db_session() as session:
+        yield session
+
+
 async def create_tables() -> None:
     """创建数据库表"""
     async with async_engine.begin() as coon:
@@ -122,6 +128,19 @@ SQLALCHEMY_DATABASE_URL = create_database_url()
 async_engine = create_database_async_engine(SQLALCHEMY_DATABASE_URL)
 async_db_session = create_database_async_session(async_engine)
 
+# qq_group 数据库链接（只读外部服务数据库）
+QQ_GROUP_DATABASE_URL = URL.create(
+    drivername='postgresql+asyncpg',
+    username=settings.DATABASE_USER,
+    password=settings.DATABASE_PASSWORD,
+    host=settings.DATABASE_HOST,
+    port=settings.DATABASE_PORT,
+    database=settings.QQ_GROUP_DATABASE,
+)
+qq_group_async_engine = create_database_async_engine(QQ_GROUP_DATABASE_URL)
+qq_group_async_db_session = create_database_async_session(qq_group_async_engine)
+
 # Session Annotated
 CurrentSession = Annotated[AsyncSession, Depends(get_db)]
 CurrentSessionTransaction = Annotated[AsyncSession, Depends(get_db_transaction)]
+QQGroupSession = Annotated[AsyncSession, Depends(get_qq_group_db)]
