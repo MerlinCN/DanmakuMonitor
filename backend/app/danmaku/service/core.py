@@ -233,8 +233,8 @@ class BilibiliService:
                     dedeuserid=db_credential.dedeuserid,
                     ac_time_value=db_credential.ac_time_value,
                 )
-                if await self._credential.check_refresh():
-                    await self._credential.refresh()
+                # if await self._credential.check_refresh():
+                #     await self._credential.refresh()
                 return self._credential
 
             api_credential = await self.login_by_qrcode()

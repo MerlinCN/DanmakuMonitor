@@ -291,6 +291,13 @@ class Settings(BaseSettings):
     # .env
     BILIBILI_MONITOR_ROOM_IDS: list[int]
 
+    ##################################################
+    # [ Plugin ] qq_group
+    ##################################################
+    # QQ 群验证服务配置
+    QQ_GROUP_API_HOST: str = 'localhost'
+    QQ_GROUP_API_PORT: int = 8080
+
     @model_validator(mode='before')
     @classmethod
     def check_env(cls, values: Any) -> Any:
